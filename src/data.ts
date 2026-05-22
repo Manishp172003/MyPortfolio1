@@ -1,5 +1,8 @@
 import { Project, Skill, TimelineItem, ClientLogo, Testimonial } from './types';
 
+const ashaBoutiqueImage = new URL('../media/project_images/Screenshot 2026-04-27 145501.png', import.meta.url).href;
+const zayEcommerceImage = new URL('../media/project_images/Screenshot 2026-05-04 163757.png', import.meta.url).href;
+
 export const portfolioOwner = {
   name: "MANISH PAWAR",
   title: "Java Full Stack Developer (Learning) & Electronics Engineer",
@@ -45,13 +48,26 @@ export const skills: Skill[] = [
 
 export const projects: Project[] = [
   {
+    id: "asha-boutique",
+    title: "Asha Boutique Store",
+    description: "Elegant boutique storefront with curated fashion sections, appointment booking, and polished responsive layout.",
+    longDescription: "A boutique fashion website crafted around a premium storefront experience. Built with a refined hero section, lookbook-style visuals, appointment-focused calls to action, and responsive spacing that keeps the brand presentation clean across devices.",
+    image: ashaBoutiqueImage,
+    tags: ["React.js", "CSS3", "Responsive Web Design", "UI Design"],
+    liveUrl: "https://asha-boutique-store.vercel.app/",
+    githubUrl: "https://github.com/Manishp19311",
+    featured: true,
+    category: "Web Development",
+    stats: "Live Storefront"
+  },
+  {
     id: "zay-ecommerce",
     title: "Zay E-Commerce Website",
     description: "Responsive sportswear e-commerce storefront built with HTML, CSS, and Bootstrap 5.",
     longDescription: "A bespoke sportswear e-commerce storefront. Engineered with smooth responsive navigation (navbar), interactive product grids, category cards, modern carousels, and footers. Applied custom media queries and Bootstrap's flex system for outstanding responsiveness across screen sizes.",
-    image: "https://images.unsplash.com/photo-1472851294608-062f824d296e?auto=format&fit=crop&q=80&w=800",
+    image: zayEcommerceImage,
     tags: ["HTML5", "CSS3", "Bootstrap 5", "Responsive Web Design"],
-    liveUrl: "https://github.com/Manishp19311",
+    liveUrl: "https://e-commerce-website-lake-three.vercel.app/",
     githubUrl: "https://github.com/Manishp19311",
     featured: true,
     category: "Web Development",
