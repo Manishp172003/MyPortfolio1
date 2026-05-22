@@ -1,0 +1,8 @@
+{
+  "name": "Manish Portfolio",
+  "description": "A premium, cinematic personal portfolio for Manish, a Frontend Developer & UI/UX Enthusiast featuring neon purple glowing visuals, interactive project cards, and smooth animations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
