@@ -228,16 +228,16 @@ export default function Hero() {
         
         {/* Social Icons matching the screenshot bar */}
         <div className="flex items-center gap-3" id="hero-social-tray">
-          <a href="#github" className="w-8 h-8 rounded-full border border-white/5 bg-white/2 hover:bg-neon-purple/10 hover:text-neon-purple-light text-neutral-400 flex items-center justify-center transition-all duration-300">
+          <a href={portfolioOwner.github} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full border border-white/5 bg-white/2 hover:bg-neon-purple/10 hover:text-neon-purple-light text-neutral-400 flex items-center justify-center transition-all duration-300">
             <Facebook size={14} />
           </a>
-          <a href="#instagram" className="w-8 h-8 rounded-full border border-white/5 bg-white/2 hover:bg-neon-purple/10 hover:text-neon-purple-light text-neutral-400 flex items-center justify-center transition-all duration-300">
+          <a href={portfolioOwner.instagram} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full border border-white/5 bg-white/2 hover:bg-neon-purple/10 hover:text-neon-purple-light text-neutral-400 flex items-center justify-center transition-all duration-300">
             <Instagram size={14} />
           </a>
           <a href="#behance" className="w-8 h-8 rounded-full border border-white/5 bg-white/2 hover:bg-neon-purple/10 hover:text-neon-purple-light text-neutral-400 flex items-center justify-center font-bold text-[10px] transition-all duration-300">
             Bē
           </a>
-          <a href="#twitter" className="w-8 h-8 rounded-full border border-white/5 bg-white/2 hover:bg-neon-purple/10 hover:text-neon-purple-light text-neutral-400 flex items-center justify-center transition-all duration-300">
+          <a href={portfolioOwner.twitter} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full border border-white/5 bg-white/2 hover:bg-neon-purple/10 hover:text-neon-purple-light text-neutral-400 flex items-center justify-center transition-all duration-300">
             <Twitter size={14} />
           </a>
         </div>

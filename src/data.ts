@@ -14,7 +14,7 @@ export const portfolioOwner = {
   github: "https://github.com/Manishp19311",
   linkedin: "https://linkedin.com/in/manish-pawar-880011370",
   twitter: "#",
-  instagram: "#",
+  instagram: "https://www.instagram.com/manish_p193/?hl=en",
   experienceYearCount: 1,
   deliveryCount: "3+",
   satisfactionRate: "100%",
@@ -25,7 +25,8 @@ export const clientLogos: ClientLogo[] = [
   { name: "YCCE Nagpur", iconSvg: "YCCE" },
   { name: "IT Vedant", iconSvg: "IT Vedant" },
   { name: "MNT Industries", iconSvg: "MNT Ind" },
-  { name: "TuteDude", iconSvg: "TuteDude" }
+  { name: "TuteDude", iconSvg: "TuteDude" },
+  { name: "Athenura", iconSvg: "Athenura" }
 ];
 
 export const skills: Skill[] = [
