@@ -200,7 +200,7 @@ export default function Hero() {
                 {/* Small branding tags inside image */}
                 <div className="absolute top-5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full border border-white/5 bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-widest text-[#c084fc] uppercase flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-neon-purple-light animate-pulse" />
-                  <span>#MMP_PORTFOLIO</span>
+                  <span>#MP_PORTFOLIO</span>
                 </div>
 
                 {/* Floating Name/Role details inside the bottom of card overlay */}

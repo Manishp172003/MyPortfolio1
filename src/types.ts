@@ -28,6 +28,8 @@ export interface TimelineItem {
   description: string[];
   icon: string; // lucide icon name
   type: 'experience' | 'education';
+  website?: string;
+  linkedin?: string;
 }
 
 export interface ClientLogo {

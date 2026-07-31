@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Briefcase, GraduationCap, Calendar, Milestone, ArrowUpRight, Sparkles, Award } from 'lucide-react';
+import { Briefcase, GraduationCap, Calendar, Milestone, ArrowUpRight, Sparkles, Award, ExternalLink, Linkedin } from 'lucide-react';
 import { timelineItems } from '../data';
 
 export default function Experience() {
@@ -122,6 +122,34 @@ export default function Experience() {
                     </li>
                   ))}
                 </ul>
+
+                {/* External Links */}
+                {(item.website || item.linkedin) && (
+                  <div className="flex items-center gap-2 pt-3 border-t border-white/5">
+                    {item.website && (
+                      <a 
+                        href={item.website}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-1.5 text-[10.5px] font-mono text-neutral-400 hover:text-neon-purple-light transition-colors"
+                      >
+                        <ExternalLink size={12} />
+                        <span>Website</span>
+                      </a>
+                    )}
+                    {item.linkedin && (
+                      <a 
+                        href={item.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-1.5 text-[10.5px] font-mono text-neutral-400 hover:text-neon-purple-light transition-colors"
+                      >
+                        <Linkedin size={12} />
+                        <span>LinkedIn</span>
+                      </a>
+                    )}
+                  </div>
+                )}
 
                 {/* Hover trigger metrics indicator */}
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity justify-end text-[10.5px] font-mono text-neon-purple-light font-bold mt-2">

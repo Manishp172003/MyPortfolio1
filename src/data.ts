@@ -2,6 +2,7 @@ import { Project, Skill, TimelineItem, ClientLogo, Testimonial } from './types';
 
 const ashaBoutiqueImage = new URL('../media/project_images/Screenshot 2026-04-27 145501.png', import.meta.url).href;
 const zayEcommerceImage = new URL('../media/project_images/Screenshot 2026-05-04 163757.png', import.meta.url).href;
+const signalMindImage = new URL('../media/project_images/signalmind.png', import.meta.url).href;
 
 export const portfolioOwner = {
   name: "MANISH PAWAR",
@@ -15,7 +16,7 @@ export const portfolioOwner = {
   twitter: "#",
   instagram: "#",
   experienceYearCount: 1,
-  deliveryCount: "2+",
+  deliveryCount: "3+",
   satisfactionRate: "100%",
   trustedClientsCount: "1+"
 };
@@ -74,17 +75,17 @@ export const projects: Project[] = [
     stats: "Bootstrap 5 Grid"
   },
   {
-    id: "simple-calculator",
-    title: "Simple Calculator Console App",
-    description: "C++ console-based calculator supporting multiple mathematical operations with robust error handling.",
-    longDescription: "Designed and implemented an expressive console-based calculator using C++ object-oriented principles. Engineered neat algorithmic checks with robust exception handling and protection against edge case errors like division-by-zero.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800",
-    tags: ["C++", "OOP", "Console Application", "Error Resolution"],
-    liveUrl: "https://github.com/Manishp19311",
+    id: "signal-mind",
+    title: "Signal Mind",
+    description: "AI-Powered Urban Traffic & Transit Optimization Platform that leverages real-time road grid data and AI models to predict congestion and optimize routes.",
+    longDescription: "An intelligent traffic management and urban transit platform that leverages real-time road grid data and AI models to predict congestion, optimize multi-modal commute routes, clear emergency corridors, and track real-time CO₂ emission reductions across urban grids.",
+    image: signalMindImage,
+    tags: ["AI/ML", "React.js", "Real-time Data", "Urban Tech"],
+    liveUrl: "https://samrt-ai-cop.vercel.app/",
     githubUrl: "https://github.com/Manishp19311",
     featured: true,
-    category: "C++ Programming",
-    stats: "OOP Paradigm"
+    category: "AI & Data Science",
+    stats: "AI-Powered"
   }
 ];
 
@@ -101,6 +102,21 @@ export const timelineItems: TimelineItem[] = [
     ],
     icon: "Briefcase",
     type: "experience"
+  },
+  {
+    id: "exp-athenura",
+    role: "Frontend Developer Intern",
+    company: "Athenura",
+    duration: "June 2026 – Present",
+    description: [
+      "Engineered responsive, user-centric web interfaces using modern frontend technologies (HTML5, CSS3, Bootstrap 5, and React.js).",
+      "Collaborated on UI/UX improvements to enhance visual consistency, accessibility, and cross-browser compatibility.",
+      "Optimized component structure and page layout rendering for improved frontend performance and maintainability."
+    ],
+    icon: "Briefcase",
+    type: "experience",
+    website: "https://www.athenura.in/",
+    linkedin: "https://www.linkedin.com/company/athenura/posts/?feedView=all"
   },
   {
     id: "edu-btech",
