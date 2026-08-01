@@ -1,8 +1,13 @@
-import { Project, Skill, TimelineItem, ClientLogo, Testimonial } from './types';
+import { Project, Skill, TimelineItem, ClientLogo, Testimonial, Achievement } from './types';
 
 const ashaBoutiqueImage = new URL('../media/project_images/Screenshot 2026-04-27 145501.png', import.meta.url).href;
 const zayEcommerceImage = new URL('../media/project_images/Screenshot 2026-05-04 163757.png', import.meta.url).href;
 const signalMindImage = new URL('../media/project_images/signalmind.png', import.meta.url).href;
+const itVedantHackathonImage = new URL('../media/project_images/IT Vedant Hackthon 2026.jpeg', import.meta.url).href;
+const athenuraHackathonImage = new URL('../media/project_images/Athenura.jpg', import.meta.url).href;
+const profileImage = new URL('../media/project_images/profile image.jpeg', import.meta.url).href;
+
+export { profileImage };
 
 export const portfolioOwner = {
   name: "MANISH PAWAR",
@@ -39,6 +44,7 @@ export const skills: Skill[] = [
   
   // Backend & Databases
   { name: "Java (Learning)", level: 65, icon: "CodeHtml", category: "backend", color: "from-red-500 to-orange-500" },
+  { name: "Spring Boot", level: 60, icon: "CodeHtml", category: "backend", color: "from-green-600 to-emerald-500" },
   { name: "Node.js", level: 75, icon: "CodeHtml", category: "backend", color: "from-green-500 to-emerald-600" },
   { name: "MySQL", level: 80, icon: "Database", category: "backend", color: "from-indigo-600 to-blue-700" },
   
@@ -87,6 +93,30 @@ export const projects: Project[] = [
     featured: true,
     category: "AI & Data Science",
     stats: "AI-Powered"
+  }
+];
+
+export const achievements: Achievement[] = [
+  {
+    id: "it-vedant-hackathon",
+    title: "IT Vedant Hackathon 2026",
+    position: "1st Place 🥇",
+    hackathon: "IT Vedant Hackathon 2026",
+    project: "SIGNAL MIND – AI-Powered Smart Traffic Management System",
+    team: ["Pranati Dahiwale (Team Leader)", "Manish Pawar", "Yamini Bisen", "Nitin Diwewar"],
+    image: itVedantHackathonImage,
+    year: "2026"
+  },
+  {
+    id: "athenura-hackathon",
+    title: "Athenura (ATH) Hackathon",
+    position: "3rd Place 🥉",
+    hackathon: "Athenura (ATH) Hackathon",
+    project: "Krishi Mitra",
+    team: ["Code Crushers Team"],
+    prize: "₹1,100",
+    image: athenuraHackathonImage,
+    year: "2026"
   }
 ];
 

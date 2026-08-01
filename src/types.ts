@@ -46,3 +46,15 @@ export interface Testimonial {
   comment: string;
   rating: number;
 }
+
+export interface Achievement {
+  id: string;
+  title: string;
+  position: string;
+  hackathon: string;
+  project: string;
+  team: string[];
+  prize?: string;
+  image: string;
+  year: string;
+}
