@@ -1,21 +1,59 @@
 import { useState, FormEvent } from 'react';
-import { Mail, Send, CheckCircle, Navigation, Clock, Globe, ArrowRight } from 'lucide-react';
+import { Mail, Send, CheckCircle, Navigation, Clock, Globe, ArrowRight, AlertCircle } from 'lucide-react';
 import { portfolioOwner } from '../data';
+
+// Web3Forms access key
+const WEB3FORMS_ACCESS_KEY = "a43ceb30-b1cd-4351-aa7b-50b77f6d7046";
 
 export default function Contact() {
   const [formState, setFormState] = useState({ name: '', email: '', subject: 'Web Development', message: '' });
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: FormEvent) => {
+  const getButtonText = () => {
+    switch (status) {
+      case 'submitting':
+        return 'AUTHENTICATING ENCRYPTED POST...';
+      case 'error':
+        return 'RETRY TRANSMISSION';
+      default:
+        return 'TRANSMIT SECURE INQUIRY';
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!formState.name || !formState.email || !formState.message) return;
 
     setStatus('submitting');
-    // Simulate real high-speed secure API submission
-    setTimeout(() => {
-      setStatus('success');
-      setFormState({ name: '', email: '', subject: 'Web Development', message: '' });
-    }, 1500);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: formState.subject,
+          from_name: formState.name,
+          reply_to: formState.email,
+          message: formState.message,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormState({ name: '', email: '', subject: 'Web Development', message: '' });
+      } else {
+        throw new Error('Failed to submit form');
+      }
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage('Failed to send message. Please try again.');
+      console.error('Form submission error:', error);
+    }
   };
 
   return (
@@ -124,6 +162,26 @@ export default function Contact() {
                     <ArrowRight size={13} />
                   </button>
                 </div>
+              ) : status === 'error' ? (
+                /* Error feedback panel */
+                <div className="py-12 flex flex-col items-center justify-center text-center gap-5" id="form-error-alert">
+                  <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 shadow-lg shadow-red-500/5">
+                    <AlertCircle size={32} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <h5 className="font-display font-black text-xl sm:text-2xl text-white">Transmission Failed</h5>
+                    <p className="text-sm text-neutral-400 font-sans max-w-xs mx-auto">
+                      {errorMessage || 'Something went wrong. Please try again.'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    className="mt-4 text-xs font-mono font-bold text-red-400 hover:underline flex items-center gap-1.5"
+                  >
+                    <span>RETRY TRANSMISSION</span>
+                    <ArrowRight size={13} />
+                  </button>
+                </div>
               ) : (
                 /* Form Inputs */
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6" id="contact-web-form">
@@ -198,7 +256,7 @@ export default function Contact() {
                     className="w-full mt-2 bg-gradient-to-r from-neon-purple via-indigo-600 to-cyber-blue hover:from-neon-purple-light hover:to-cyber-blue-light text-white text-xs sm:text-sm font-bold py-4 rounded-xl transition-all shadow-neon-glow hover:shadow-neon-glowing-strong hover:scale-[1.01] flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
                     id="contact-submit-btn"
                   >
-                    <span>{status === 'submitting' ? 'AUTHENTICATING ENCRYPTED POST...' : 'TRANSMIT SECURE INQUIRY'}</span>
+                    <span>{getButtonText()}</span>
                     <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform shrink-0" />
                   </button>
                 </form>
