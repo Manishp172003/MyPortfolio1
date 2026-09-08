@@ -44,7 +44,7 @@ export default function CustomCursor() {
     <>
       {/* Main Cursor */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] mix-blend-screen hidden md:block"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[999999] mix-blend-screen hidden md:block"
         style={{
           translateX: '-50%',
           translateY: '-50%',
@@ -84,7 +84,7 @@ export default function CustomCursor() {
 
       {/* Trailing Cursor */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[9998] hidden md:block"
+        className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[999998] hidden md:block"
         style={{
           translateX: '-50%',
           translateY: '-50%',
@@ -106,7 +106,7 @@ export default function CustomCursor() {
       {/* Click Ripple Effect */}
       {isClicking && (
         <motion.div
-          className="fixed top-0 left-0 w-16 h-16 rounded-full pointer-events-none z-[9997] hidden md:block"
+          className="fixed top-0 left-0 w-16 h-16 rounded-full pointer-events-none z-[999997] hidden md:block"
           style={{
             left: mousePosition.x,
             top: mousePosition.y,

@@ -3,6 +3,9 @@ import { Project, Skill, TimelineItem, ClientLogo, Testimonial, Achievement } fr
 const ashaBoutiqueImage = new URL('../media/project_images/Screenshot 2026-04-27 145501.png', import.meta.url).href;
 const zayEcommerceImage = new URL('../media/project_images/Screenshot 2026-05-04 163757.png', import.meta.url).href;
 const signalMindImage = new URL('../media/project_images/signalmind.png', import.meta.url).href;
+const smartHealthImage = new URL('../media/project_images/SmartHealth.png', import.meta.url).href;
+const whiteboardImage = new URL('../media/project_images/Interactive Whiteboard project.png', import.meta.url).href;
+const expenseTrackerImage = new URL('../media/project_images/expensetracker.jpg', import.meta.url).href;
 const itVedantHackathonImage = new URL('../media/project_images/IT Vedant Hackthon 2026.jpeg', import.meta.url).href;
 const athenuraHackathonImage = new URL('../media/project_images/Athenura.jpg', import.meta.url).href;
 const profileImage = new URL('../media/project_images/profile image.jpeg', import.meta.url).href;
@@ -11,19 +14,20 @@ export { profileImage };
 
 export const portfolioOwner = {
   name: "MANISH PAWAR",
-  title: "Java Full Stack Developer (Learning) & Electronics Engineer",
+  title: "Java Full Stack Developer & Electronics Engineer",
   subtitle: "Hi, I’m Manish Pawar",
-  description: "Final-year Electronics & Telecommunication Engineering student aiming to become a Java Full Stack Developer. Trained at IT Vedant with hands-on experience in building modern web interfaces.",
-  aboutDetailed: "I am a final-year B.Tech (Electronics & Telecommunication Engineering) student at Yeshwantrao Chavan College of Engineering, Nagpur, with a focused career goal of becoming a talented Java Full Stack Developer. Currently trained at IT Vedant, I bring hands-on experience in building modern, responsive front-end user interfaces (HTML5, CSS3, Bootstrap 5, JavaScript, React.js, Node.js) combined with robust foundational knowledge in Java, MySQL, OOP principles, C, and C++. I am a rapid learner and natural problem-solver, committed to engineering neat, efficient, and user-centric web systems.",
+  description: "B.Tech graduate in Electronics and Telecommunication Engineering from YCCE Nagpur, aspiring to build a career as a Java Full Stack Developer. Trained at IT Vedant with hands-on experience in building modern web applications.",
+  aboutDetailed: "B.Tech graduate in Electronics and Telecommunication Engineering from Yeshwantrao Chavan College of Engineering (YCCE), Nagpur, aspiring to build a career as a Java Full Stack Developer. Trained at IT Vedant with hands-on experience in HTML, CSS, Bootstrap, JavaScript, React.js, Java, Spring Boot, and MySQL through academic and personal projects. Strong foundation in C, C++, and Object-Oriented Programming with excellent problem-solving and analytical skills. Passionate about developing responsive, user-friendly web applications and continuously learning modern technologies to deliver high-quality software solutions.",
+  phone: "+91 9322097485",
   email: "manishpawar172003@gmail.com",
   github: "https://github.com/Manishp19311",
   linkedin: "https://linkedin.com/in/manish-pawar-880011370",
   twitter: "#",
   instagram: "https://www.instagram.com/manish_p193/?hl=en",
   experienceYearCount: 1,
-  deliveryCount: "3+",
+  deliveryCount: "6+",
   satisfactionRate: "100%",
-  trustedClientsCount: "1+"
+  trustedClientsCount: "2+"
 };
 
 export const clientLogos: ClientLogo[] = [
@@ -43,43 +47,31 @@ export const skills: Skill[] = [
   { name: "React.js", level: 80, icon: "CodeReact", category: "frontend", color: "from-cyan-400 to-blue-500" },
   
   // Backend & Databases
-  { name: "Java (Learning)", level: 65, icon: "CodeHtml", category: "backend", color: "from-red-500 to-orange-500" },
-  { name: "Spring Boot", level: 60, icon: "CodeHtml", category: "backend", color: "from-green-600 to-emerald-500" },
+  { name: "Java", level: 80, icon: "CodeHtml", category: "backend", color: "from-red-500 to-orange-500" },
+  { name: "Spring Boot", level: 75, icon: "CodeHtml", category: "backend", color: "from-green-600 to-emerald-500" },
   { name: "Node.js", level: 75, icon: "CodeHtml", category: "backend", color: "from-green-500 to-emerald-600" },
-  { name: "MySQL", level: 80, icon: "Database", category: "backend", color: "from-indigo-600 to-blue-700" },
+  { name: "MySQL", level: 85, icon: "Database", category: "backend", color: "from-indigo-600 to-blue-700" },
   
   // Tools & Programming
   { name: "C / C++", level: 88, icon: "CodeHtml", category: "tools", color: "from-sky-500 to-blue-600" },
   { name: "Git & GitHub", level: 85, icon: "CodeGit", category: "tools", color: "from-neutral-700 to-neutral-900" },
+  { name: "Docker", level: 70, icon: "CodeHtml", category: "tools", color: "from-blue-500 to-cyan-500" },
   { name: "VS Code", level: 90, icon: "CodeHtml", category: "tools", color: "from-blue-500 to-indigo-500" }
 ];
 
 export const projects: Project[] = [
   {
-    id: "asha-boutique",
-    title: "Asha Boutique Store",
-    description: "Elegant boutique storefront with curated fashion sections, appointment booking, and polished responsive layout.",
-    longDescription: "A boutique fashion website crafted around a premium storefront experience. Built with a refined hero section, lookbook-style visuals, appointment-focused calls to action, and responsive spacing that keeps the brand presentation clean across devices.",
-    image: ashaBoutiqueImage,
-    tags: ["React.js", "CSS3", "Responsive Web Design", "UI Design"],
-    liveUrl: "https://asha-boutique-store.vercel.app/",
+    id: "expense-tracker",
+    title: "Expense Tracker",
+    description: "Full-stack financial management platform with Spring Boot, JWT authentication, Docker, MySQL, and React frontend.",
+    longDescription: "A production-grade full-stack Expense Tracker engineered with Spring Boot, React, TypeScript, and MySQL. Features JWT authentication and Spring Security for secure user login and protected endpoints, comprehensive RESTful APIs with CRUD operations, Docker containerization deployed on Render, and a responsive frontend deployed on Vercel connecting to a cloud-hosted MySQL database.",
+    image: expenseTrackerImage,
+    tags: ["Spring Boot", "React.js", "TypeScript", "MySQL", "JWT Security", "Docker", "Render"],
+    liveUrl: "https://samrt-ai-cop.vercel.app/",
     githubUrl: "https://github.com/Manishp19311",
     featured: true,
-    category: "Web Development",
-    stats: "Live Storefront"
-  },
-  {
-    id: "zay-ecommerce",
-    title: "Zay E-Commerce Website",
-    description: "Responsive sportswear e-commerce storefront built with HTML, CSS, and Bootstrap 5.",
-    longDescription: "A bespoke sportswear e-commerce storefront. Engineered with smooth responsive navigation (navbar), interactive product grids, category cards, modern carousels, and footers. Applied custom media queries and Bootstrap's flex system for outstanding responsiveness across screen sizes.",
-    image: zayEcommerceImage,
-    tags: ["HTML5", "CSS3", "Bootstrap 5", "Responsive Web Design"],
-    liveUrl: "https://e-commerce-website-lake-three.vercel.app/",
-    githubUrl: "https://github.com/Manishp19311",
-    featured: true,
-    category: "Web Development",
-    stats: "Bootstrap 5 Grid"
+    category: "Full Stack & Java",
+    stats: "Spring Boot & Docker"
   },
   {
     id: "signal-mind",
@@ -93,6 +85,58 @@ export const projects: Project[] = [
     featured: true,
     category: "AI & Data Science",
     stats: "AI-Powered"
+  },
+  {
+    id: "smart-health",
+    title: "SmartHealth Management System",
+    description: "Digital healthcare platform with specialist discovery, instant appointment scheduling, and electronic health records.",
+    longDescription: "A comprehensive digital healthcare management platform engineered to connect patients with certified medical specialists. Features intelligent doctor discovery filters by department, automated appointment booking workflows, electronic health records, and an accessible, responsive medical dashboard.",
+    image: smartHealthImage,
+    tags: ["React.js", "Healthcare Tech", "REST APIs", "Tailwind CSS", "Medical UI"],
+    liveUrl: "https://smart-healthcare-management-system.vercel.app/",
+    githubUrl: "https://github.com/Manishp19311",
+    featured: true,
+    category: "Web Application",
+    stats: "Digital Clinic Hub"
+  },
+  {
+    id: "interactive-whiteboard",
+    title: "Real-Time Interactive Whiteboard",
+    description: "Collaborative digital canvas with instant multi-user drawing, dynamic room creation, geometric primitives, and canvas export.",
+    longDescription: "A high-performance digital whiteboard built for low-latency remote collaboration. Features smooth vector freehand sketching, customizable geometric shapes, sticky notes, eraser and brush sizing controls, room-based multiplayer synchronization, template selector, and one-click canvas export.",
+    image: whiteboardImage,
+    tags: ["React.js", "Canvas API", "WebSockets", "Multiplayer Sync", "UI/UX"],
+    liveUrl: "https://real-time-interactive-white-board.vercel.app/",
+    githubUrl: "https://github.com/Manishp19311",
+    featured: true,
+    category: "Real-Time Collaboration",
+    stats: "Multiplayer Canvas"
+  },
+  {
+    id: "asha-boutique",
+    title: "Asha Boutique Store",
+    description: "Elegant boutique storefront with curated fashion sections, appointment booking, and polished responsive layout.",
+    longDescription: "A boutique fashion website crafted around a premium storefront experience. Built with a refined hero section, lookbook-style visuals, appointment-focused calls to action, and responsive spacing that keeps the brand presentation clean across devices.",
+    image: ashaBoutiqueImage,
+    tags: ["React.js", "CSS3", "Responsive Web Design", "UI Design"],
+    liveUrl: "https://asha-boutique-store.vercel.app/",
+    githubUrl: "https://github.com/Manishp19311",
+    featured: true,
+    category: "E-Commerce",
+    stats: "Live Storefront"
+  },
+  {
+    id: "zay-ecommerce",
+    title: "Zay E-Commerce Website",
+    description: "Responsive sportswear e-commerce storefront built with HTML, CSS, and Bootstrap 5.",
+    longDescription: "A bespoke sportswear e-commerce storefront. Engineered with smooth responsive navigation (navbar), interactive product grids, category cards, modern carousels, and footers. Applied custom media queries and Bootstrap's flex system for outstanding responsiveness across screen sizes.",
+    image: zayEcommerceImage,
+    tags: ["HTML5", "CSS3", "Bootstrap 5", "Responsive Web Design"],
+    liveUrl: "https://e-commerce-website-lake-three.vercel.app/",
+    githubUrl: "https://github.com/Manishp19311",
+    featured: true,
+    category: "E-Commerce",
+    stats: "Bootstrap 5 Grid"
   }
 ];
 
@@ -259,3 +303,107 @@ export const testimonials: Testimonial[] = [
     rating: 5
   }
 ];
+
+export const resumeData = {
+  personal: {
+    name: "MANISH PAWAR",
+    title: "Java Full Stack Developer & Electronics Engineer",
+    phone: "+91 9322097485",
+    email: "manishpawar172003@gmail.com",
+    linkedin: "https://linkedin.com/in/manish-pawar-880011370",
+    linkedinDisplay: "linkedin.com/in/manish-pawar-880011370",
+    github: "https://github.com/Manishp19311",
+    githubDisplay: "github.com/Manishp19311",
+    location: "Nagpur, Maharashtra, India"
+  },
+  summary: "B.Tech graduate in Electronics and Telecommunication Engineering from Yeshwantrao Chavan College of Engineering (YCCE), Nagpur, aspiring to build a career as a Java Full Stack Developer. Trained at IT Vedant with hands-on experience in HTML, CSS, Bootstrap, JavaScript, React.js, Java, Spring Boot, and MySQL through academic and personal projects. Strong foundation in C, C++, and Object-Oriented Programming with excellent problem-solving and analytical skills. Passionate about developing responsive, user-friendly web applications and continuously learning modern technologies to deliver high-quality software solutions.",
+  technicalSkills: {
+    languages: ["C", "C++", "JavaScript", "Java", "Spring Boot"],
+    webTech: ["HTML5", "CSS3", "Bootstrap 5", "JavaScript", "React.js", "Node.js", "MySQL"],
+    tools: ["VS Code", "Git", "GitHub", "Vercel", "Figma", "Google Stitch", "Postman", "Render", "Docker"],
+    concepts: ["OOP", "Responsive Design", "Problem Solving", "UI/UX Design Principles"]
+  },
+  projects: [
+    {
+      title: "Expense Tracker (React + Spring Boot)",
+      type: "Full Stack Project",
+      points: [
+        "Built and deployed a full-stack Expense Tracker using Spring Boot, React, TypeScript, and MySQL.",
+        "Implemented JWT authentication and Spring Security for secure user login and protected APIs.",
+        "Designed RESTful APIs for expense management with complete CRUD operations.",
+        "Integrated React frontend with Spring Boot backend through Axios and REST APIs.",
+        "Deployed backend on Render (Docker) and frontend on Vercel, connecting to a cloud-hosted MySQL database.",
+        "Used Git and GitHub for version control and deployment."
+      ]
+    },
+    {
+      title: "Asha Boutique Store (React + Spring Boot)",
+      type: "Full Stack Project",
+      points: [
+        "Developed a responsive boutique website using React.js, HTML, CSS, Bootstrap, and JavaScript.",
+        "Created product showcase and category-wise browsing features for boutique collections.",
+        "Designed a modern, mobile-friendly user interface for seamless user experience.",
+        "Implemented reusable React components and responsive layouts."
+      ]
+    },
+    {
+      title: "SIGNAL MIND – AI-Powered Smart Traffic Management System",
+      type: "Hackathon 1st Prize Project",
+      points: [
+        "Architected an intelligent traffic & transit optimization system leveraging road grid telemetry.",
+        "Developed real-time route optimization, emergency corridor clearance, and CO₂ emissions tracking.",
+        "Won 1st Prize at IT-Vedant Hackathon 2026."
+      ]
+    }
+  ],
+  experience: [
+    {
+      company: "Athenura Technologies",
+      role: "Frontend Developer Intern",
+      period: "2026",
+      points: [
+        "Developed responsive and user-friendly web interfaces using React.js, HTML, CSS, and JavaScript.",
+        "Built reusable React components to improve code maintainability and scalability.",
+        "Collaborated with backend developers to integrate REST APIs into frontend applications.",
+        "Improved UI/UX by implementing responsive layouts and optimizing website performance.",
+        "Used Git and GitHub for version control and team collaboration.",
+        "Participated in code reviews, debugging, and testing to ensure high-quality software delivery."
+      ]
+    }
+  ],
+  certifications: [
+    { name: "Java Full Stack Development", provider: "IT Vedant", date: "Aug 2026" },
+    { name: "Web Development Essentials (HTML, CSS, Bootstrap)", provider: "IT Vedant", date: "Jan 2026" },
+    { name: "SQL Deep Dive (MySQL)", provider: "IT Vedant", date: "May 2026" },
+    { name: "C++ Programming (C++)", provider: "TuteDude", date: "March 2026" },
+    { name: "React Essentials (React.js)", provider: "IT Vedant", date: "April 2026" },
+    { name: "Core Java", provider: "IT Vedant", date: "June 2026" }
+  ],
+  hackathons: [
+    {
+      title: "First Prize – IT-Vedant Hackathon 2026",
+      detail: "SIGNAL MIND – AI-Powered Smart Traffic Management System"
+    },
+    {
+      title: "Third Prize – ATH Hackathon 0.1",
+      detail: "Secured 3rd Prize as a member of Team Code Crushers at ATH Hackathon 0.1"
+    }
+  ],
+  education: [
+    {
+      degree: "B.Tech — Electronics & Telecommunication Engineering",
+      institution: "Yeshwantrao Chavan College of Engineering (YCCE), Nagpur",
+      period: "2022 – 2026"
+    },
+    {
+      degree: "12th (HSC) — 92%",
+      institution: "Vidya Sadhana Junior College",
+      period: "Graduated"
+    },
+    {
+      degree: "10th (SSC) — 89%",
+      institution: "Vidya Sadhana High School",
+      period: "Graduated"
+    }
+  ]
+};
