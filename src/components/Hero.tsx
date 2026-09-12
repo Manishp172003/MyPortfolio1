@@ -1,24 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { 
-  ArrowDown, 
   Play, 
   Sparkles, 
-  Github, 
-  Linkedin, 
-  Instagram, 
-  Mail, 
-  Award, 
-  Code2, 
-  Terminal,
-  ExternalLink,
-  CheckCircle2,
-  FileText
+  FileText, 
+  ChevronDown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { portfolioOwner, profileImage } from '../data';
+import { portfolioOwner } from '../data';
 
 interface HeroProps {
   onOpenResume?: () => void;
+  isLoaded?: boolean;
 }
 
 const rotatingRoles = [
@@ -28,28 +20,151 @@ const rotatingRoles = [
   { title: "Electronics & IoT Innovator", color: "from-amber-400 via-yellow-300 to-neon-purple-light" }
 ];
 
-export default function Hero({ onOpenResume }: HeroProps = {}) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [cardTab, setCardTab] = useState<'profile' | 'code'>('profile');
-  const cardRef = useRef<HTMLDivElement>(null);
+// Exact authentic SVG icons from the Tech Ecosystem (Skills.tsx)
+const floatingSkills = [
+  {
+    id: 'java',
+    name: 'Java Core',
+    role: 'Core Architecture & OOP',
+    color: '#ED8B00',
+    glowColor: 'rgba(237, 139, 0, 0.5)',
+    className: '-top-4 sm:-top-8 left-4 sm:left-8',
+    floatDuration: 5.2,
+    delay: 0,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none">
+        <path d="M8.5 18.5c2.5.5 5.5.5 8 0" stroke="#ED8B00" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M7 21c4 .8 9 .8 13 0" stroke="#ED8B00" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M12 2C9.5 5 13.5 7 11 10c-1.5 1.8-1 3.5.5 5" stroke="#5382A1" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M15 4c-1.5 2 1 3.5-.5 5.5-1 1.3-1 2.5 0 4" stroke="#ED8B00" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M8 8c-1 1.5 1 2.5 0 4-.8 1.2-.5 2.2.5 3.5" stroke="#5382A1" strokeWidth="2.2" strokeLinecap="round" />
+      </svg>
+    )
+  },
+  {
+    id: 'spring',
+    name: 'Spring Boot',
+    role: 'Microservices & REST APIs',
+    color: '#6DB33F',
+    glowColor: 'rgba(109, 179, 63, 0.5)',
+    className: '-top-4 sm:-top-8 right-4 sm:right-8',
+    floatDuration: 4.8,
+    delay: 0.4,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#6DB33F]">
+        <path d="M21.7 8.3L13.7.3c-.4-.4-1-.4-1.4 0L4.3 8.3c-.4.4-.4 1 0 1.4l8 8c.4.4 1 .4 1.4 0l8-8c.4-.4.4-1 0-1.4zM13 14.5c-2.5 0-4.5-2-4.5-4.5 0-1.8 1-3.3 2.5-4 .3 1.2 1.3 2 2.5 2 1.4 0 2.5-1.1 2.5-2.5 0-.3 0-.5-.1-.7 1 .8 1.6 2 1.6 3.2 0 2.5-2 4.5-4.5 4.5z" />
+      </svg>
+    )
+  },
+  {
+    id: 'react',
+    name: 'React 19',
+    role: 'Virtual DOM & Reactive UI',
+    color: '#61DAFB',
+    glowColor: 'rgba(97, 218, 251, 0.5)',
+    className: 'top-1/2 -right-4 sm:-right-10 -translate-y-1/2',
+    floatDuration: 5.6,
+    delay: 0.8,
+    icon: (
+      <svg viewBox="-11.5 -10.23174 23 20.46348" className="w-5 h-5 fill-none" strokeWidth="1.6">
+        <circle cx="0" cy="0" r="2.05" fill="#61DAFB" />
+        <g stroke="#61DAFB">
+          <ellipse rx="11" ry="4.2" />
+          <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+          <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+        </g>
+      </svg>
+    )
+  },
+  {
+    id: 'tailwind',
+    name: 'Tailwind CSS',
+    role: 'Modern Design System',
+    color: '#06B6D4',
+    glowColor: 'rgba(6, 182, 212, 0.5)',
+    className: '-bottom-4 sm:-bottom-6 right-6 sm:right-10',
+    floatDuration: 4.6,
+    delay: 1.2,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#06B6D4]">
+        <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z" />
+      </svg>
+    )
+  },
+  {
+    id: 'mysql',
+    name: 'MySQL DB',
+    role: 'Relational Schema & SQL',
+    color: '#4479A1',
+    glowColor: 'rgba(68, 121, 161, 0.5)',
+    className: '-bottom-4 sm:-bottom-6 left-6 sm:left-10',
+    floatDuration: 5.4,
+    delay: 1.6,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#4479A1]">
+        <path d="M12 3c-5 0-9 1.8-9 4s4 4 9 4 9-1.8 9-4-4-4-9-4zm0 6c-4.4 0-8-1.5-8-3s3.6-3 8-3 8 1.5 8 3-3.6 3-8 3zm-9 1.5V13c0 2.2 4 4 9 4s9-1.8 9-4v-2.5c-2 1.5-5.3 2.5-9 2.5s-7-1-9-2.5zm0 6V19c0 2.2 4 4 9 4s9-1.8 9-4v-2.5c-2 1.5-5.3 2.5-9 2.5s-7-1-9-2.5z" />
+      </svg>
+    )
+  },
+  {
+    id: 'javascript',
+    name: 'JavaScript',
+    role: 'ES6+ & Async Engine',
+    color: '#F7DF1E',
+    glowColor: 'rgba(247, 223, 30, 0.5)',
+    className: 'top-1/2 -left-4 sm:-left-10 -translate-y-1/2',
+    floatDuration: 5.0,
+    delay: 2.0,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5">
+        <rect width="24" height="24" rx="4" fill="#F7DF1E" />
+        <path d="M7 17.5c0 1.2.7 1.8 1.9 1.8.8 0 1.4-.4 1.7-.8l.8 1.2c-.6.8-1.5 1.2-2.6 1.2-2.1 0-3.4-1.3-3.4-3.5V11h1.6v6.5zm5.5 1.3c.6.4 1.5.7 2.4.7 1.3 0 2-.6 2-1.5 0-.9-.6-1.3-1.8-1.8-1.6-.6-2.7-1.3-2.7-2.9 0-1.6 1.3-2.8 3.2-2.8 1 0 1.8.3 2.3.6l-.6 1.4c-.4-.3-1.1-.5-1.8-.5-1 0-1.6.5-1.6 1.2 0 .8.6 1.2 1.9 1.7 1.7.7 2.6 1.5 2.6 3 0 1.8-1.4 3-3.5 3-1.1 0-2.2-.4-2.8-.8l.6-1.3z" fill="#000000" />
+      </svg>
+    )
+  },
+  {
+    id: 'html-css',
+    name: 'HTML5 & CSS3',
+    role: 'Semantic DOM & Shaders',
+    color: '#E34F26',
+    glowColor: 'rgba(227, 79, 38, 0.5)',
+    className: '-top-8 sm:-top-14 left-1/2 -translate-x-1/2',
+    floatDuration: 5.8,
+    delay: 1.0,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#E34F26]">
+        <path d="M1.5 0h21l-1.9 21.2L12 24l-8.6-2.8L1.5 0zm16.5 6.4H6.8l.3 3.6h9.1l-.5 5.5-3.7 1-3.7-1-.2-2.7H5.9l.4 4.7 5.7 1.6 5.7-1.6 1.1-11.1z" />
+      </svg>
+    )
+  },
+  {
+    id: 'git',
+    name: 'Git & GitHub',
+    role: 'CI/CD & Version Control',
+    color: '#F05032',
+    glowColor: 'rgba(240, 80, 50, 0.5)',
+    className: '-bottom-8 sm:-bottom-14 left-1/2 -translate-x-1/2',
+    floatDuration: 4.4,
+    delay: 0.6,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#F05032]">
+        <path d="M21.6 10.9L13.1 2.4c-.8-.8-2-.8-2.8 0L8.5 4.2l3.5 3.5c.8-.3 1.8-.1 2.4.5.6.6.8 1.6.5 2.4l3.4 3.4c.8-.3 1.8-.1 2.4.5.8.8.8 2.1 0 2.9s-2.1.8-2.9 0c-.7-.7-.9-1.7-.5-2.5l-3.2-3.2v6.2c.2.2.4.4.5.6.8.8.8 2.1 0 2.9s-2.1.8-2.9 0c-.8-.8-.8-2.1 0-2.9.3-.3.6-.5 1-.6V8.6c-.4-.1-.7-.3-1-.6-.7-.7-.9-1.7-.5-2.5L7.1 2.8 2.4 7.5c-.8.8-.8 2 0 2.8l8.5 8.5c.8.8 2 .8 2.8 0l7.9-7.9c.8-.8.8-2 0-2.8z" />
+      </svg>
+    )
+  }
+];
 
-  // Mouse Parallax & Soft 3D Card Tilt
+export default function Hero({ onOpenResume, isLoaded = true }: HeroProps = {}) {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+
+  // Mouse Parallax
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 100 - 50;
       const y = (e.clientY / window.innerHeight) * 100 - 50;
       setMousePosition({ x, y });
-
-      if (cardRef.current) {
-        const rect = cardRef.current.getBoundingClientRect();
-        const cardX = e.clientX - rect.left - rect.width / 2;
-        const cardY = e.clientY - rect.top - rect.height / 2;
-        const rotateX = -(cardY / (rect.height / 2)) * 10;
-        const rotateY = (cardX / (rect.width / 2)) * 10;
-        setCardTilt({ rotateX, rotateY });
-      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -71,30 +186,29 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
     }
   };
 
-  const handleCardMouseLeave = () => {
-    setCardTilt({ rotateX: 0, rotateY: 0 });
-  };
-
   return (
     <section 
       className="relative min-h-screen w-full flex flex-col justify-between items-center overflow-hidden bg-[#030014] pt-28 pb-10 px-4 sm:px-6 lg:px-8 select-none" 
       id="hero"
     >
-      {/* Background Live Cyber Video (Subtle atmospheric depth only) */}
-      <video 
-        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-20 mix-blend-screen select-none"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/hero-bg.mp4" type="video/mp4" />
-        <source src="https://getshared.com/dashboard/api/files/c6798678-547b-11f1-8264-ac1f6b763f30/stream?share=ENxPoCG3lRMK" type="video/mp4" />
-      </video>
+      {/* 1. SEAMLESS LIVE BACKGROUND VIDEO (Direct Continuation from Preloader) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <video 
+          autoPlay
+          loop
+          muted
+          playsInline
+          src="/hero-bg.mp4"
+          className="w-full h-full object-cover scale-105 filter brightness-[0.7] contrast-125 select-none"
+        />
 
-      {/* Directional Gradient Scrim: Deep pure obsidian on the left half to completely eliminate video face clash with text */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#030014] via-[#030014]/95 via-55% to-[#030014]/40 pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030014] via-transparent to-[#030014] pointer-events-none z-0" />
+        {/* Fallback Animated Gradient if video delays */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#07051a] via-[#030014] to-[#0a0720] -z-10" />
+      </div>
+
+      {/* 2. ATMOSPHERIC SHADERS & VIGNETTES (Exact match with Loader for seamless transition) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#030014] via-[#030014]/45 to-[#030014] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,#030014_85%)] pointer-events-none z-0" />
 
       {/* Dynamic Mouse Spotlight Beam */}
       <div 
@@ -107,8 +221,8 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
       />
 
       {/* Ambient Atmospheric Glow Orbs */}
-      <div className="absolute top-[20%] left-[5%] w-[350px] h-[350px] rounded-full bg-neon-purple/15 blur-[130px] animate-pulse-slow pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[5%] w-[400px] h-[400px] rounded-full bg-cyber-blue/15 blur-[140px] animate-pulse-slow pointer-events-none" />
+      <div className="absolute top-[20%] left-[5%] w-[350px] h-[350px] rounded-full bg-neon-purple/20 blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[5%] w-[400px] h-[400px] rounded-full bg-cyber-blue/20 blur-[150px] pointer-events-none" />
 
       {/* Hero Content Container */}
       <div className="w-full max-w-[1650px] mx-auto flex flex-col items-center justify-center relative z-10 my-auto">
@@ -129,13 +243,15 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
         </div>
 
         {/* 2-Column Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 items-center w-full relative z-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center w-full relative z-20">
           
-          {/* Left Column: High-Impact Typography & Action Buttons */}
+          {/* ========================================================= */}
+          {/* LEFT COLUMN: Slides in smoothly from Left (x: -120 -> 0)  */}
+          {/* ========================================================= */}
           <motion.div 
-            initial={{ opacity: 0, x: -35 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
+            initial={{ opacity: 0, x: -120, filter: 'blur(10px)' }}
+            animate={isLoaded ? { opacity: 1, x: 0, filter: 'blur(0px)' } : { opacity: 0, x: -120, filter: 'blur(10px)' }}
+            transition={{ duration: 1.05, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="col-span-1 lg:col-span-7 text-left flex flex-col gap-6"
           >
             {/* Live Status Pill */}
@@ -145,7 +261,7 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
               </span>
               <span className="text-[11px] font-mono font-bold tracking-wider text-neon-purple-light uppercase">
-                Available for New Projects & Full-Stack Roles
+                Available for New Projects &amp; Full-Stack Roles
               </span>
             </div>
 
@@ -156,7 +272,7 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
                 Web Experiences
               </h1>
 
-              {/* Kinetic Role Flipper with Fixed Height */}
+              {/* Kinetic Role Flipper */}
               <div className="h-10 sm:h-12 flex items-center overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -175,7 +291,7 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
 
             {/* Bio Summary */}
             <p className="text-neutral-300 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
-              Final-year <strong className="text-white font-semibold">Electronics & Telecommunication</strong> engineer at YCCE Nagpur, trained at <strong className="text-neon-purple-light font-semibold">IT Vedant</strong>. Engineering clean Java backends, RESTful microservices, and Apple-smooth responsive UI systems.
+              Final-year <strong className="text-white font-semibold">Electronics &amp; Telecommunication</strong> engineer at YCCE Nagpur, trained at <strong className="text-neon-purple-light font-semibold">IT Vedant</strong>. Engineering clean Java backends, RESTful microservices, and Apple-smooth responsive UI systems.
             </p>
 
             {/* CTAs */}
@@ -227,263 +343,154 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
             </div>
           </motion.div>
 
-          {/* Right Column: 3D Interactive Holographic Developer HUD Console */}
+          {/* ========================================================================= */}
+          {/* RIGHT COLUMN: Slides in from Right (x: 120 -> 0) with Authentic SVGs      */}
+          {/* ========================================================================= */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2 }}
-            className="col-span-1 lg:col-span-5 flex justify-center lg:justify-end items-center relative"
-            style={{ perspective: 1200 }}
+            initial={{ opacity: 0, x: 120, filter: 'blur(10px)' }}
+            animate={isLoaded ? { opacity: 1, x: 0, filter: 'blur(0px)' } : { opacity: 0, x: 120, filter: 'blur(10px)' }}
+            transition={{ duration: 1.05, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="col-span-1 lg:col-span-5 flex justify-center items-center relative py-12"
           >
-            {/* Main Interactive 3D HUD Console Card */}
-            <div
-              ref={cardRef}
-              onMouseLeave={handleCardMouseLeave}
-              className="relative z-10 w-full max-w-[400px] sm:max-w-[440px] rounded-3xl overflow-hidden border border-neon-purple/30 bg-gradient-to-b from-[#110c2c]/95 via-[#070517]/95 to-[#04020f] shadow-[0_0_50px_rgba(139,92,246,0.3)] transition-transform duration-200 ease-out backdrop-blur-2xl"
+            {/* The Floating Constellation Stage */}
+            <div 
+              className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] md:w-[480px] md:h-[480px] flex items-center justify-center"
               style={{
-                transform: `rotateX(${cardTilt.rotateX}deg) rotateY(${cardTilt.rotateY}deg)`,
-                transformStyle: 'preserve-3d',
+                transform: `translate(${mousePosition.x * 0.15}px, ${mousePosition.y * 0.15}px)`,
+                transition: 'transform 0.4s ease-out',
               }}
             >
-              {/* Top Integrated Achievement Header */}
-              <div className="px-5 py-2.5 bg-gradient-to-r from-amber-500/20 via-neon-purple/20 to-cyber-blue/20 border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-amber-400 text-sm">🏆</span>
-                  <span className="font-mono font-extrabold text-[11px] text-amber-300 tracking-wider uppercase">
+              {/* Outer Cyber Dashed Rings (Orbit Lines) */}
+              <div className="absolute inset-0 rounded-full border border-dashed border-neon-purple/25 animate-[spin_40s_linear_infinite] pointer-events-none" />
+              <div className="absolute inset-8 sm:inset-12 rounded-full border border-cyber-blue/20 animate-[spin_28s_linear_infinite_reverse] pointer-events-none" />
+              <div className="absolute inset-16 sm:inset-24 rounded-full border border-dashed border-white/10 pointer-events-none" />
+
+              {/* Ambient Radiant Center Glow */}
+              <div className="absolute inset-20 rounded-full bg-gradient-to-tr from-neon-purple/35 via-cyan-400/20 to-neon-purple/35 blur-2xl animate-pulse pointer-events-none" />
+
+              {/* === CENTRAL GLOWING HOLOGRAPHIC TECH REACTOR CORE === */}
+              <div className="relative z-20 flex flex-col items-center">
+                <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full p-1.5 bg-gradient-to-tr from-neon-purple via-cyan-400 to-neon-purple shadow-[0_0_50px_rgba(139,92,246,0.65)] flex items-center justify-center">
+                  
+                  {/* Concentric Rotating Cyber Arcs */}
+                  <div className="absolute inset-1 rounded-full border border-dashed border-cyan-300/40 animate-[spin_16s_linear_infinite]" />
+                  <div className="absolute inset-2.5 rounded-full border border-neon-purple-light/40 animate-[spin_10s_linear_infinite_reverse]" />
+
+                  {/* Core Glass Sphere with Ambient Glow */}
+                  <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/25 bg-gradient-to-b from-[#130c33]/95 via-[#08051a]/95 to-[#03010b] backdrop-blur-2xl flex flex-col items-center justify-center shadow-inner">
+                    
+                    {/* Deep Central Core Ambient Glow */}
+                    <div className="absolute inset-3 rounded-full bg-gradient-to-tr from-neon-purple/40 via-cyan-400/25 to-purple-500/40 blur-md animate-pulse" />
+
+                    {/* Developer Monogram: <M/> */}
+                    <div className="relative z-10 flex items-center justify-center font-mono font-black text-3xl sm:text-4xl tracking-tighter drop-shadow-[0_0_20px_rgba(97,218,251,0.8)] select-none">
+                      <span className="text-neon-purple-light font-bold">&lt;</span>
+                      <span className="text-white font-black px-0.5 bg-gradient-to-b from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">M</span>
+                      <span className="text-cyan-400 font-bold">/&gt;</span>
+                    </div>
+
+                    {/* Core System Status */}
+                    <div className="relative z-10 flex items-center gap-1 mt-1 font-mono text-[9px] text-cyan-300/90 tracking-widest uppercase">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      <span>SYS_READY</span>
+                    </div>
+
+                    {/* Scanning Laser Line */}
+                    <motion.div
+                      className="absolute inset-0 pointer-events-none overflow-hidden"
+                      animate={{ y: [-80, 80, -80] }}
+                      transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                      <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-300 to-transparent shadow-[0_0_12px_#67e8f9]" />
+                    </motion.div>
+                  </div>
+
+                  {/* Corner Power Beacon Dot */}
+                  <div className="absolute bottom-1 right-3 w-5 h-5 rounded-full bg-[#030014] flex items-center justify-center border border-white/20 z-30 shadow-md">
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" />
+                  </div>
+                </div>
+
+                {/* Achievement Moniker Pill Under Core */}
+                <div className="mt-3 flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#09071c]/90 border border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.25)] backdrop-blur-md">
+                  <span className="text-amber-400 text-xs">🏆</span>
+                  <span className="font-mono text-[10px] font-bold text-amber-300 tracking-wider uppercase">
                     1st Place Winner
                   </span>
                 </div>
-                <span className="font-mono text-[10px] text-neutral-400">
-                  IT Vedant Hackathon 2026
-                </span>
               </div>
 
-              {/* Card Window Controls & Tabs */}
-              <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between bg-black/30">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-                  <span className="ml-2 font-mono text-[10px] text-neutral-400 font-bold tracking-wider">
-                    DEV_HUD // MANISH_PAWAR
-                  </span>
-                </div>
-
-                {/* Card Mode Tabs */}
-                <div className="flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10">
-                  <button
-                    onClick={() => setCardTab('profile')}
-                    className={`px-3 py-1 rounded-full text-[10px] font-mono transition-all cursor-pointer ${
-                      cardTab === 'profile'
-                        ? 'bg-neon-purple text-white font-bold shadow-[0_0_10px_rgba(139,92,246,0.5)]'
-                        : 'text-neutral-400 hover:text-white'
-                    }`}
+              {/* === 8 ORBITING FLOATING SKILL ICONS (Exact SVGs from Tech Ecosystem) === */}
+              {floatingSkills.map((skill, idx) => (
+                <motion.div
+                  key={skill.id}
+                  className={`absolute z-30 ${skill.className}`}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={isLoaded ? {
+                    scale: 1,
+                    opacity: 1,
+                    y: [0, -10, 0, 10, 0],
+                    x: [0, 6, 0, -6, 0],
+                  } : { scale: 0, opacity: 0 }}
+                  transition={isLoaded ? {
+                    scale: { duration: 0.55, delay: 0.35 + idx * 0.08, ease: [0.34, 1.56, 0.64, 1] },
+                    opacity: { duration: 0.4, delay: 0.35 + idx * 0.08 },
+                    y: { duration: skill.floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.9 + skill.delay },
+                    x: { duration: skill.floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.9 + skill.delay },
+                  } : { duration: 0.2 }}
+                  onMouseEnter={() => setHoveredSkill(skill.id)}
+                  onMouseLeave={() => setHoveredSkill(null)}
+                >
+                  <div
+                    className="group relative flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#08061a]/85 border border-white/15 backdrop-blur-xl transition-all duration-300 hover:scale-110 cursor-pointer shadow-lg"
+                    style={{
+                      boxShadow: hoveredSkill === skill.id 
+                        ? `0 0 25px ${skill.glowColor}, 0 0 50px ${skill.glowColor}` 
+                        : '0 8px 24px rgba(0, 0, 0, 0.4)',
+                      borderColor: hoveredSkill === skill.id ? skill.color : 'rgba(255, 255, 255, 0.15)',
+                    }}
                   >
-                    PROFILE
-                  </button>
-                  <button
-                    onClick={() => setCardTab('code')}
-                    className={`px-3 py-1 rounded-full text-[10px] font-mono transition-all cursor-pointer ${
-                      cardTab === 'code'
-                        ? 'bg-neon-purple text-white font-bold shadow-[0_0_10px_rgba(139,92,246,0.5)]'
-                        : 'text-neutral-400 hover:text-white'
-                    }`}
-                  >
-                    CODE
-                  </button>
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-6 relative min-h-[350px] flex flex-col justify-between">
-                
-                {cardTab === 'profile' ? (
-                  /* TAB 1: Profile HUD View */
-                  <div className="flex flex-col items-center justify-center text-center">
-                    
-                    {/* Portrait Avatar Frame with Cyber Aperture */}
-                    <div className="relative w-36 h-36 sm:w-40 sm:h-40 mb-4">
-                      {/* Rotating Outer Dashed Rings */}
-                      <div className="absolute inset-0 rounded-full border border-dashed border-neon-purple/50 animate-[spin_20s_linear_infinite]" />
-                      <div className="absolute inset-1.5 rounded-full border border-cyber-blue/40 animate-[spin_12s_linear_infinite_reverse]" />
-
-                      {/* Ambient Halo */}
-                      <div className="absolute inset-3 rounded-full bg-gradient-to-tr from-neon-purple/40 to-cyber-blue/30 blur-lg animate-pulse" />
-
-                      {/* Clean Portrait Image Container */}
-                      <div className="absolute inset-3 rounded-full overflow-hidden border-2 border-white/20 shadow-2xl bg-[#060413]">
-                        <img 
-                          src={profileImage} 
-                          alt={portfolioOwner.name}
-                          className="w-full h-full object-cover select-none transform hover:scale-105 transition-transform duration-500"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/profile-image.jpeg';
-                          }}
-                        />
-                      </div>
-
-                      {/* Scanning Laser Line */}
-                      <motion.div
-                        className="absolute inset-3 rounded-full overflow-hidden pointer-events-none"
-                        animate={{ y: [-60, 60, -60] }}
-                        transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
-                      >
-                        <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-neon-purple-light to-transparent shadow-[0_0_8px_#c084fc]" />
-                      </motion.div>
-
-                      {/* Online Status Dot */}
-                      <div className="absolute bottom-3 right-3 w-4 h-4 rounded-full bg-[#030014] flex items-center justify-center border border-white/20 z-20">
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" />
-                      </div>
+                    {/* Authentic Tech Ecosystem SVG Icon */}
+                    <div className="flex items-center justify-center shrink-0">
+                      {skill.icon}
                     </div>
 
-                    {/* Name & Title */}
-                    <h3 className="font-display font-black text-2xl text-white tracking-wide">
-                      {portfolioOwner.name}
-                    </h3>
-                    <p className="font-mono text-xs text-neon-purple-light tracking-wide mt-1">
-                      {portfolioOwner.title}
-                    </p>
+                    {/* Skill Label */}
+                    <span className="font-mono text-xs font-bold text-neutral-200 group-hover:text-white tracking-wide whitespace-nowrap">
+                      {skill.name}
+                    </span>
 
-                    {/* Location & Status Chips */}
-                    <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-                      <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-neutral-300">
-                        📍 Nagpur, India
-                      </span>
-                      <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-neutral-300">
-                        🎓 YCCE (ETC 2026)
-                      </span>
-                      <span className="px-3 py-1 rounded-full bg-neon-purple/10 border border-neon-purple/30 text-[10px] font-mono text-[#c084fc]">
-                        ☕ Java & Spring
-                      </span>
-                    </div>
-
-                    {/* Dynamic Equalizer Audio Wave */}
-                    <div className="flex items-end justify-center gap-1.5 h-5 mt-5 opacity-70">
-                      <div className="w-1 bg-neon-purple-light rounded-full animate-[bounce_1.2s_infinite_100ms]" style={{ height: '35%' }} />
-                      <div className="w-1 bg-cyber-blue rounded-full animate-[bounce_1.4s_infinite_300ms]" style={{ height: '80%' }} />
-                      <div className="w-1 bg-pink-400 rounded-full animate-[bounce_1s_infinite_200ms]" style={{ height: '60%' }} />
-                      <div className="w-1 bg-neon-purple-light rounded-full animate-[bounce_1.6s_infinite_500ms]" style={{ height: '100%' }} />
-                      <div className="w-1 bg-cyber-blue-light rounded-full animate-[bounce_1.2s_infinite_400ms]" style={{ height: '45%' }} />
-                      <div className="w-1 bg-[#c084fc] rounded-full animate-[bounce_1.5s_infinite_150ms]" style={{ height: '70%' }} />
-                    </div>
-
+                    {/* Interactive Glowing Tooltip on Hover */}
+                    <AnimatePresence>
+                      {hoveredSkill === skill.id && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                          transition={{ duration: 0.18 }}
+                          className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-black/90 border border-white/20 font-mono text-[9px] text-neutral-300 whitespace-nowrap pointer-events-none z-40 shadow-xl"
+                        >
+                          {skill.role}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                ) : (
-                  /* TAB 2: Live Code View */
-                  <div className="text-left font-mono text-xs space-y-2 bg-[#060412] p-4 rounded-2xl border border-white/10">
-                    <div className="text-neutral-500 text-[10px] pb-1 border-b border-white/5 flex items-center justify-between">
-                      <span>Developer.java</span>
-                      <span className="text-green-400 flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping" />
-                        Compiled
-                      </span>
-                    </div>
-
-                    <div className="text-pink-400">package <span className="text-neutral-300">com.manish.portfolio;</span></div>
-                    
-                    <div className="text-neon-purple-light">
-                      public class <span className="text-amber-300 font-bold">ManishPawar</span> &#123;
-                    </div>
-
-                    <div className="pl-3 space-y-1 text-[11px]">
-                      <div><span className="text-cyber-blue-light">String</span> role = <span className="text-emerald-300">"Java Full Stack Developer"</span>;</div>
-                      <div><span className="text-cyber-blue-light">String</span> college = <span className="text-emerald-300">"YCCE Nagpur (ETC)"</span>;</div>
-                      <div><span className="text-cyber-blue-light">String[]</span> stack = &#123; <span className="text-emerald-300">"Java"</span>, <span className="text-emerald-300">"Spring"</span>, <span className="text-emerald-300">"React"</span>, <span className="text-emerald-300">"MySQL"</span> &#125;;</div>
-                      <div><span className="text-cyber-blue-light">boolean</span> availableForHire = <span className="text-amber-400 font-bold">true</span>;</div>
-                    </div>
-
-                    <div className="pl-3 pt-1">
-                      <div className="text-neon-purple-light">
-                        public void <span className="text-yellow-300">innovate</span>() &#123;
-                      </div>
-                      <div className="pl-3 text-emerald-300 text-[11px]">
-                        System.out.println(<span className="text-amber-200">"Transforming ideas into scalable code!"</span>);
-                      </div>
-                      <div className="text-neon-purple-light">&#125;</div>
-                    </div>
-
-                    <div className="text-neon-purple-light">&#125;</div>
-                  </div>
-                )}
-
-              </div>
-
-              {/* Card Footer Status Bar */}
-              <div className="px-5 py-2.5 border-t border-white/10 bg-black/50 flex items-center justify-between font-mono text-[10px] text-neutral-400">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  STATUS: <strong className="text-white">READY FOR WORK</strong>
-                </span>
-                <span className="text-neon-purple-light">PORTFOLIO v2.0</span>
-              </div>
+                </motion.div>
+              ))}
             </div>
-
           </motion.div>
 
         </div>
 
       </div>
 
-      {/* Hero Bottom Bar: Verified Social Dock & Discover Down Indicator */}
-      <div className="w-full max-w-[1650px] mx-auto flex items-center justify-between border-t border-white/10 pt-5 mt-6 relative z-20">
-        
-        {/* Genuine Developer Social Media Dock */}
-        <div className="flex items-center gap-3" id="hero-social-tray">
-          <a 
-            href={portfolioOwner.github} 
-            target="_blank" 
-            rel="noreferrer" 
-            className="w-9 h-9 rounded-full border border-white/10 bg-white/5 hover:bg-neon-purple/20 hover:border-neon-purple/50 hover:text-white text-neutral-400 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm cursor-pointer"
-            aria-label="GitHub Profile"
-            title="GitHub Profile"
-          >
-            <Github size={15} />
-          </a>
-
-          <a 
-            href={portfolioOwner.linkedin} 
-            target="_blank" 
-            rel="noreferrer" 
-            className="w-9 h-9 rounded-full border border-white/10 bg-white/5 hover:bg-cyber-blue/20 hover:border-cyber-blue/50 hover:text-white text-neutral-400 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm cursor-pointer"
-            aria-label="LinkedIn Profile"
-            title="LinkedIn Profile"
-          >
-            <Linkedin size={15} />
-          </a>
-
-          <a 
-            href={portfolioOwner.instagram} 
-            target="_blank" 
-            rel="noreferrer" 
-            className="w-9 h-9 rounded-full border border-white/10 bg-white/5 hover:bg-pink-500/20 hover:border-pink-500/50 hover:text-white text-neutral-400 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm cursor-pointer"
-            aria-label="Instagram Profile"
-            title="Instagram Profile"
-          >
-            <Instagram size={15} />
-          </a>
-
-          <a 
-            href={`mailto:${portfolioOwner.email}`} 
-            className="w-9 h-9 rounded-full border border-white/10 bg-white/5 hover:bg-neon-purple/20 hover:border-neon-purple/50 hover:text-white text-neutral-400 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm cursor-pointer"
-            aria-label="Email Manish"
-            title="Email Manish"
-          >
-            <Mail size={15} />
-          </a>
-        </div>
-
-        {/* Discover Manish Scroll Down Trigger */}
-        <button 
-          onClick={() => handleScrollTo('about')}
-          className="flex items-center gap-2.5 text-xs font-mono text-neutral-400 hover:text-neon-purple-light transition-colors group cursor-pointer"
-          id="hero-scroll-btn"
-        >
-          <span className="tracking-widest uppercase font-bold text-[11px]">DISCOVER MANISH</span>
-          <span className="w-7 h-7 rounded-full bg-white/5 border border-white/10 group-hover:border-neon-purple/50 group-hover:bg-neon-purple/10 flex items-center justify-center group-hover:translate-y-1 transition-all">
-            <ArrowDown size={12} className="text-neutral-400 group-hover:text-neon-purple-light transition-colors" />
-          </span>
-        </button>
+      {/* Bottom Scroll Anchor Hint */}
+      <div 
+        onClick={() => handleScrollTo('about')}
+        className="relative z-10 mt-6 flex items-center gap-2 font-mono text-[11px] text-neutral-500 hover:text-white transition-colors cursor-pointer"
+      >
+        <span className="uppercase tracking-widest">DISCOVER MANISH</span>
+        <ChevronDown size={14} className="animate-bounce text-neon-purple-light" />
       </div>
     </section>
   );

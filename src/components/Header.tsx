@@ -5,6 +5,7 @@ import { portfolioOwner } from '../data';
 
 interface HeaderProps {
   onOpenResume?: () => void;
+  isLoaded?: boolean;
 }
 
 const navItems = [
@@ -16,7 +17,7 @@ const navItems = [
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
-export default function Header({ onOpenResume }: HeaderProps) {
+export default function Header({ onOpenResume, isLoaded = true }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -60,8 +61,11 @@ export default function Header({ onOpenResume }: HeaderProps) {
   };
 
   return (
-    <header 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${
+    <motion.header 
+      initial={{ y: -90, opacity: 0 }}
+      animate={isLoaded ? { y: 0, opacity: 1 } : { y: -90, opacity: 0 }}
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 border-b ${
         scrolled 
           ? 'bg-[#030014]/92 backdrop-blur-2xl border-neon-purple/25 shadow-[0_10px_35px_rgba(0,0,0,0.7)]'
           : 'bg-[#030014]/75 backdrop-blur-xl border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.35)]'
@@ -258,6 +262,6 @@ export default function Header({ onOpenResume }: HeaderProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

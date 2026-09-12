@@ -42,12 +42,12 @@ export default function App() {
         <div className="absolute bottom-[20%] left-[-10%] w-[30vw] h-[30vw] bg-neon-purple/3 rounded-full blur-[140px] pointer-events-none z-0" />
 
         {/* Header element */}
-        <Header onOpenResume={() => setIsResumeOpen(true)} />
+        <Header onOpenResume={() => setIsResumeOpen(true)} isLoaded={!isLoading} />
 
         {/* Main Content Layout sections */}
         <main className="relative w-full flex flex-col gap-0" id="master-layout-main">
           {/* Hero Segment */}
-          <Hero onOpenResume={() => setIsResumeOpen(true)} />
+          <Hero onOpenResume={() => setIsResumeOpen(true)} isLoaded={!isLoading} />
 
           {/* Rolling stat band */}
           <Ticker />
