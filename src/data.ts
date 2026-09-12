@@ -8,7 +8,7 @@ const whiteboardImage = new URL('../media/project_images/Interactive Whiteboard 
 const expenseTrackerImage = new URL('../media/project_images/expensetracker.jpg', import.meta.url).href;
 const itVedantHackathonImage = new URL('../media/project_images/IT Vedant Hackthon 2026.jpeg', import.meta.url).href;
 const athenuraHackathonImage = new URL('../media/project_images/Athenura.jpg', import.meta.url).href;
-const profileImage = new URL('../media/project_images/profile image.jpeg', import.meta.url).href;
+const profileImage = new URL('../media/project_images/profile-image.jpeg', import.meta.url).href;
 
 export { profileImage };
 

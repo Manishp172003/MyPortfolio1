@@ -17,7 +17,7 @@ import {
   Flame
 } from 'lucide-react';
 import { motion, useInView } from 'motion/react';
-import { portfolioOwner, clientLogos } from '../data';
+import { portfolioOwner, clientLogos, profileImage } from '../data';
 
 export default function About() {
   const [copied, setCopied] = useState(false);
@@ -191,9 +191,12 @@ export default function About() {
 
                 <div className="absolute inset-3 rounded-full overflow-hidden border-2 border-white/20 bg-[#070516]">
                   <img
-                    src="/media/project_images/profile image.jpeg"
+                    src={profileImage}
                     alt={portfolioOwner.name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/profile-image.jpeg';
+                    }}
                   />
                 </div>
               </div>

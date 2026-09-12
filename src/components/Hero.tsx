@@ -15,7 +15,7 @@ import {
   FileText
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { portfolioOwner } from '../data';
+import { portfolioOwner, profileImage } from '../data';
 
 interface HeroProps {
   onOpenResume?: () => void;
@@ -313,9 +313,12 @@ export default function Hero({ onOpenResume }: HeroProps = {}) {
                       {/* Clean Portrait Image Container */}
                       <div className="absolute inset-3 rounded-full overflow-hidden border-2 border-white/20 shadow-2xl bg-[#060413]">
                         <img 
-                          src="/media/project_images/profile image.jpeg" 
-                          alt="Manish Pawar"
+                          src={profileImage} 
+                          alt={portfolioOwner.name}
                           className="w-full h-full object-cover select-none transform hover:scale-105 transition-transform duration-500"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/profile-image.jpeg';
+                          }}
                         />
                       </div>
 
